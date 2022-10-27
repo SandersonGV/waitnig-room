@@ -1,9 +1,11 @@
 <template>
-<div class="container mt-5">
-      <div class="card">
+  <div class="holder d-flex  justify-content-center">
+    <div class="container ">
+      <header class="text-center my-5">
+          <h1 class="display-4"> {{nomeAmbiente}} - senhas chamadas</h1>
+      </header>
+      <div class="card rounded border-0 shadow-sm position-relative">
         <div class="card-body">
-          <h1 class="text-center"> {{nomeAmbiente}} - senhas chamadas</h1>
-
           <nav class="nav nav-tabs" id="nav-tab" role="tablist">
             <a class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab"
               aria-controls="nav-home" aria-selected="true">Fila de espera</a>
@@ -52,6 +54,7 @@
         </div>
       </div>
     </div>
+  </div>
 </template>
 <script>
 import io from "socket.io-client"
