@@ -1,17 +1,26 @@
 <template>
-    <LayoutPadraoVue v-if="layout==0" :RecentCalls="RecentCalls" :LastCalls="LastCalls" :envname="envname" :envUrl="envUrl"/>
-    <LayoutWithMediaVue v-if="layout==1" :RecentCalls="RecentCalls" :LastCalls="LastCalls" :envname="envname" :envUrl="envUrl"/>
+    <div>
+        <LayoutWithMediaVue v-if="layout==1" :RecentCalls="RecentCalls" :LastCalls="LastCalls" :envname="envname" :envUrl="envUrl" :theme="theme" />
+        <LayoutWithOutMedia v-else-if="layout==2" :RecentCalls="RecentCalls" :LastCalls="LastCalls" :envname="envname" :envUrl="envUrl" :theme="theme" />
+        <LayoutOnlyOne v-else-if="layout==3" :RecentCalls="RecentCalls" :LastCalls="LastCalls" :envname="envname" :envUrl="envUrl" :theme="theme" />
+        <LayoutPadraoVue v-else :RecentCalls="RecentCalls" :LastCalls="LastCalls" :envname="envname" :envUrl="envUrl"/>
+    </div>
 </template>
 <script>
 import io from "socket.io-client"
 import LayoutPadraoVue from "@/components/LayoutPadrao.vue"
 import LayoutWithMediaVue from "@/components/LayoutWithMedia.vue"
+import LayoutWithOutMedia from "@/components/LayoutWithOutMedia.vue"
+import LayoutOnlyOne from "@/components/LayoutOnlyOne.vue"
+
 
 export default {
     name: "WaitingRoomView",
     components:{
         LayoutPadraoVue: LayoutPadraoVue,
         LayoutWithMediaVue: LayoutWithMediaVue,
+        LayoutWithOutMedia: LayoutWithOutMedia,
+        LayoutOnlyOne: LayoutOnlyOne,
     },
     data() {
         return {
@@ -25,6 +34,7 @@ export default {
             horaAtual: "",
             dataAtual: "",
             layout: "1",
+            theme:{},
         }
     },
     methods: {
@@ -34,12 +44,19 @@ export default {
                 let calls = env.calls.filter(o => o.status == '2');
                 this.RecentCalls = this.LastCalls = [];
                 this.AllCalls = calls;
-                this.RecentCalls = this.AllCalls.slice(0, 2);
-                if (this.RecentCalls.length > 0)
-                    this.voiceCall(this.RecentCalls[0].name + " no " + this.RecentCalls[0].place.name)
-                if (this.AllCalls.length > 2)
-                    this.LastCalls = this.AllCalls.slice(2, 6);
+                this.RecentCalls = this.AllCalls.length > 2? this.AllCalls.slice(0, env.layout.recentCalls):this.AllCalls;
+                this.theme = env.theme;
+                if (this.RecentCalls.length > 0){
+                    let calltext = this.RecentCalls[0].name + " em " + this.RecentCalls[0].place.name
+                    this.voiceCall(calltext)
+                }
+                this.layout = env.layout.id;
+
+                if (this.AllCalls.length > env.layout.recentCalls){    
+                    this.LastCalls = this.AllCalls.slice(env.layout.recentCalls, (env.layout.recentCalls+env.layout.lastCalls));
+                }
             }
+            console.log(this.RecentCalls)
         },
         voiceCall: function (text) {
             let speaker = window.speechSynthesis;

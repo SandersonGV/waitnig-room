@@ -1,18 +1,16 @@
 <template>
   
 <div class="layoutContainer corfundo">
-  <div class="rodape corfundo2 rodapeText px-2 rounded-2">
-    <divs class="d-flex  align-items-center flex justify-content-between">
-                    <div class="cortitulo1">{{envname}} </div>
-                    <div class="cortitulo1 ">
-                        <span ><i class="far fa-calendar-alt cortitulo3"></i>{{dataAtual}}</span>
-                        <span ><i class="far fa-clock cortitulo3"></i>{{horaAtual}}</span>
-                    </div>
-                </divs>
+  <div class="rodape corfundo2 rodapeText px-2 rounded-2 cortitulo1">
+    
+      <div class="cortitulo1"><h1>{{envname}}</h1> </div>
+          <h2 ><i class="far fa-calendar-alt cortitulo3"></i>{{dataAtual}}</h2>
+          <h2 ><i class="far fa-clock cortitulo3"></i>{{horaAtual}}</h2>
+               
   </div>
   <div class="ultimas-chamadas">
-    <div class="ultimas_chamadas_lista">
-      <div class="card p-3 m-3 corfundo2" :key="index" v-for="call,index in LastCalls" style="width: 20%;">
+      <h2 class="cortitulo3">Ultimas chamadas</h2>
+      <div class="card corfundo2" :key="index" v-for="call,index in LastCalls" >
           <div class="card-body text-center">
               <h1 class="card-title cortitulo1">{{call.name}}</h1>
               <div class="card-text">
@@ -20,17 +18,10 @@
               </div>
           </div>
       </div>
-    </div>
-    <div class="ultimas_texto">
-      <div class="p-3 m-3 d-flex" style="width: 10%;">
-          <h2 class="align-self-center cortitulo3">Ultimas<br>senhas</h2>
-      </div>
-    </div>
   </div>
   <div class="recentes">
     <h2 class="cortitulo3">Chamando agora</h2>
-    <div class="d-flex flex-column ">
-        <div class="card  mt-4 corfundo2" :key="index" v-for="call,index in RecentCalls" style="height:25vh;">
+        <div class="card  mt-3 corfundo2" :key="index" v-for="call,index in RecentCalls" >
             <div class="card-body text-center recentCalls">
                 <h1 class="card-title cortitulo1">{{call.name}}</h1>
                 <div class="card-text">
@@ -38,17 +29,13 @@
                 </div>
             </div>
         </div>
-    </div>
-  </div>
-  <div class="media">
-    <img style="width: 100%; height: 100%;" :src="envUrl" />
   </div>
 </div>
 </template>
 
 <script>
 export default {
-  name: 'LayoutWithMedia',
+  name: 'LayoutWithOutMedia',
   props: {
     RecentCalls: Array,
     LastCalls: Array,
@@ -88,14 +75,13 @@ export default {
 
 .layoutContainer {  
   display: grid;
-  grid-template-columns: 70% 30%;
-  grid-template-rows: 65% 30% 5%;
+  grid-template-columns: 65% 35%;
+  grid-template-rows: 65% 35%;
   gap: 0px 0px;
   grid-auto-flow: row;
   grid-template-areas:
-    "media recentes"
-    "ultimas-chamadas ultimas-chamadas"
-    "rodape rodape";
+    "recentes  ultimas-chamadas"
+    "rodape ultimas-chamadas";
   width: 100vw;
   height: 100vh;
   padding: 10px;
@@ -103,35 +89,37 @@ export default {
 
 .rodape { 
   grid-area: rodape; 
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .rodapeText{
   font-size: x-large;
 }
 
-.ultimas-chamadas {  display: grid;
-  grid-template-columns: 0.3fr 1.2fr;
-  grid-template-rows: 1fr;
-  gap: 0px 0px;
-  grid-auto-flow: row;
-  grid-template-areas:
-    "ultimas_texto ultimas_chamadas_lista";
+.ultimas-chamadas {  
   grid-area: ultimas-chamadas;
-}
-
-.ultimas_chamadas_lista { 
-  grid-area: ultimas_chamadas_lista; 
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: flex-start;
+    flex-direction: column;
+    align-items: stretch;
 }
 
-.ultimas_texto { grid-area: ultimas_texto; }
+.ultimas-chamadas .card{  
+  height: 14%;
+  margin: 6px;
+}
+
+
+.ultimas-chamadas .card-title{
+  font-size: 3vh;
+}
+.ultimas-chamadas .card-text{
+  font-size: 2vh;
+}
 
 .recentes { grid-area: recentes; }
-
-.media { grid-area: media; padding: 10px;}
 
 .recentCalls {
   display: flex;
@@ -139,6 +127,17 @@ export default {
   flex-wrap: nowrap;
   align-items: stretch;
   justify-content: space-evenly;
+}
+
+.recentes .card{
+  height: 90%;
+}
+
+.recentes .card-title{
+  font-size: 20vh;
+}
+.recentes .card-text{
+  font-size: 8vh;
 }
 
 .corfundo{

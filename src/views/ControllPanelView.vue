@@ -121,63 +121,66 @@
                                     <input v-model="ambiente.name"  class="form-control form-control-sm ">
                                     <label >Nome do ambiente</label>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="form-floating m-1">
                                     <input v-model="ambiente.url"  class="form-control form-control-sm ">
                                     <label >url video/imagem</label>
                                 </div>
-                                <div class="form-floating m-1">
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 form-floating m-1">
                                     <select class="form-select" v-model="ambiente.layout">
                                         <option selected>selecione</option>
-                                        <option :key="index" v-for="item,index in layouts"  >{{item.nome}}</option>
+                                        <option :key="index" v-for="item,index in layouts" :value="item" >{{item.nome}}</option>
                                     </select>
                                     <label >Layouts</label>
                                 </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <label for="exampleColorInput" class="form-label">Cores</label>
-                                    </div>
-                                    <div class="col">
-                                        <input type="color" class="form-control form-control-sm form-control-color" v-model="theme.cor1">
-                                    </div>
-                                    <div class="col">
-                                        <input type="color" class="form-control form-control-sm form-control-color" v-model="theme.cor2">
-                                    </div>
-                                    <div class="col">
-                                        <input type="color" class="form-control form-control-sm form-control-color" v-model="theme.cor3">
-                                    </div>
-                                    <div class="col">
-                                        <input type="color" class="form-control form-control-sm form-control-color" v-model="theme.cor4">
-                                    </div>
+                                <div class="col-sm-1">
+                                    <label for="exampleColorInput" class="form-label">Cores</label>
+                                </div>
+                                <div class="col-sm-1">
+                                    <input type="color" class="form-control form-control-sm form-control-color" v-model="ambiente.theme.cor1">
+                                </div>
+                                <div class="col-sm-1">
+                                    <input type="color" class="form-control form-control-sm form-control-color" v-model="ambiente.theme.cor2">
+                                </div>
+                                <div class="col-sm-1">
+                                    <input type="color" class="form-control form-control-sm form-control-color" v-model="ambiente.theme.cor3">
+                                </div>
+                                <div class="col-sm-1">
+                                    <input type="color" class="form-control form-control-sm form-control-color" v-model="ambiente.theme.cor4">
                                 </div>
                             </div>
                             <div class="row">
-                                <h4>locais
-                                </h4>
-                                <ul class="list-group m-3">
-                                    <li class="list-group-item d-flex " :key="index"
-                                        v-for="(local,index) in ambiente.places">
-                                        <div class="form-floating m-1 flex-fill">
-                                            <input v-model="local.name"  class="form-control">
-                                            <label >Nome do local</label>
-                                        </div>
-                                        <div class="form-floating m-1 flex-fill">
-                                            <input v-model="local.type"  class="form-control">
-                                            <label >Sigla do local</label>
-                                        </div>
-                                        <div class="d-flex align-items-end">
-                                            <button v-show="index == (ambiente.places.length - 1)"
-                                                class="btn btn-sm btn-primary m-2 "
-                                                @click="ambiente.places.push({name:null,type:null})">
-                                                <i class='fa fa-plus'></i>
-                                            </button>
-                                            <button v-show="index < (ambiente.places.length - 1)"
-                                                class="btn btn-sm btn-danger m-2 " @click="ambiente.places.splice(index,1)">
-                                                <i class='fa fa-trash-alt'></i>
-                                            </button>
-                                            </div>
-                                    </li>
-                                </ul>
-
+                                <table class="table table-sm m-3 table-borderless caption-top">
+                                    <caption>lista de locais</caption>
+                                    <thead>
+                                        <tr>
+                                        <th scope="col">local</th>
+                                        <th scope="col">Sigla</th>
+                                        <th scope="col"> </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody >
+                                        <tr :key="index" v-for="(local,index) in ambiente.places"> 
+                                            <td><input v-model="local.name"  class="form-control" placeholder="Nome do local"></td>
+                                            <td><input v-model="local.type"  class="form-control" placeholder="Sigla do local"></td>
+                                            <td>
+                                                <div class="d-flex align-items-end">
+                                                <button v-show="index == (ambiente.places.length - 1)"
+                                                    class="btn btn-sm btn-primary m-2 " @click="ambiente.places.push({name:null,type:null})">
+                                                    <i class='fa fa-plus'></i>
+                                                </button>
+                                                <button v-show="index < (ambiente.places.length - 1)"
+                                                    class="btn btn-sm btn-danger m-2 " @click="ambiente.places.splice(index,1)">
+                                                    <i class='fa fa-trash-alt'></i>
+                                                </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -205,9 +208,9 @@ export default {
             socket: io("http://localhost:3000"),
             environments: [],
             layouts:[
-                {id:0,nome:"com video"},
-                {id:1,nome:"sem video"},
-                {id:2,nome:"somente numero"},
+                {id:1,nome:"com video", recentCalls:2, lastCalls:4},
+                {id:2,nome:"sem video", recentCalls:1, lastCalls:6},
+                {id:3,nome:"somente numero", recentCalls:1, lastCalls:0},
             ],
             theme:{
                 nome:"padrao",
@@ -232,6 +235,8 @@ export default {
                     type: "CZ"
                 },
                 ],
+                theme:{},
+                layout:{}
             },
         }
     },
@@ -262,6 +267,8 @@ export default {
             alert("nome não pode ser vazio")
             return;
           }
+          console.log(this.ambiente)
+
           this.socket.emit("createEnv", this.ambiente);
           this.novoAmbiente();
         },
@@ -272,7 +279,9 @@ export default {
             places: [{
               name: null,
               type: null
-            }]
+            }],
+            theme:{},
+            layout:{}
           }
         },
         editAmbiente: function (env) {
