@@ -3,12 +3,18 @@ import ControllPanel from "../views/ControllPanelView.vue"
 import TotemView from "../views/TotemView.vue"
 import AttendantView from "../views/AttendantView.vue"
 import WaitingRoomView from "../views/WaitingRoomView.vue"
+import EnvironmentView from "../views/EnvironmentView.vue"
 
 const routes = [
     {
       path: '/',
       name: 'ControllPanel',
       component: ControllPanel
+    },
+    {
+      path: '/environment/:env',
+      name: 'EnvironmentView',
+      component: EnvironmentView
     },
     {
       path: '/totem/:env',

@@ -1,32 +1,14 @@
 <template>
   
 <div class="layoutContainer corfundo">
-  <div class="rodape corfundo2 rodapeText px-2 rounded-2">
-    <divs class="d-flex  align-items-center flex justify-content-between">
-                    <div class="cortitulo1">{{envname}} </div>
-                    <div class="cortitulo1 ">
-                        <span ><i class="far fa-calendar-alt cortitulo3"></i>{{dataAtual}}</span>
-                        <span ><i class="far fa-clock cortitulo3"></i>{{horaAtual}}</span>
-                    </div>
-                </divs>
-  </div>
-  <div class="ultimas-chamadas">
-    <div class="p-3 m-3 d-flex" >
-        <h2 class="align-self-center cortitulo3">Ultimas senhas</h2>
-    </div>
-    <div class="card p-3 m-3 corfundo2" :key="index" v-for="call,index in LastCalls" style="width: 20%;">
-        <div class="card-body text-center">
-            <h1 class="card-title cortitulo1">{{call.name}}</h1>
-            <div class="card-text">
-                <div class="alert corfundo3 cortitulo1">{{call.place.name}}</div>
-            </div>
-        </div>
-    </div>
+  <div class="rodape corfundo2 rodapeText px-2 rounded-2 cortitulo1">
+      <div class="cortitulo1"><h1>{{envname}}</h1> </div>
+      <h2 ><i class="far fa-calendar-alt cortitulo3"></i>{{dataAtual}}</h2>
+      <h2 ><i class="far fa-clock cortitulo3"></i>{{horaAtual}}</h2>
+               
   </div>
   <div class="recentes">
-    <h2 class="cortitulo3">Chamando agora</h2>
-    <div class="d-flex flex-column ">
-        <div class="card  mt-4 corfundo2" :key="index" v-for="call,index in RecentCalls" style="height:25vh;">
+        <div class="card  mt-3 corfundo2" :key="index" v-for="call,index in RecentCalls" >
             <div class="card-body text-center recentCalls">
                 <h1 class="card-title cortitulo1">{{call.name}}</h1>
                 <div class="card-text">
@@ -34,7 +16,6 @@
                 </div>
             </div>
         </div>
-    </div>
   </div>
   <div class="media">
     <iframe v-if="media.type=='video'" style="width: 100%; height: 100%;" autoplay muted :src="media.url" ></iframe>
@@ -45,13 +26,13 @@
 
 <script>
 export default {
-  name: 'LayoutWithMedia',
+  name: 'LayoutOnlyOneWithMedia',
   props: {
     RecentCalls: Array,
     LastCalls: Array,
     envname: String,
-    media: Object,
-    theme:Object
+    theme:Object,
+    media:Object
   },
   data() {
     return {
@@ -85,13 +66,12 @@ export default {
 
 .layoutContainer {  
   display: grid;
-  grid-template-columns: 70% 30%;
-  grid-template-rows: 65% 30% 5%;
+  grid-template-columns: 40% 60%;
+  grid-template-rows: 90% 10%; 
   gap: 0px 0px;
   grid-auto-flow: row;
   grid-template-areas:
-    "media recentes"
-    "ultimas-chamadas ultimas-chamadas"
+    "recentes media "
     "rodape rodape";
   width: 100vw;
   height: 100vh;
@@ -100,25 +80,22 @@ export default {
 
 .rodape { 
   grid-area: rodape; 
+  display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
 }
 
 .rodapeText{
   font-size: x-large;
 }
 
-.ultimas-chamadas {  
-  grid-area: ultimas-chamadas;
-  display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
-}
-
 .recentes { grid-area: recentes; }
-
 .media { 
   grid-area: media; 
-  padding: 10px;}
+  padding: 10px;
+
+}
 
 .recentCalls {
   display: flex;
@@ -126,6 +103,17 @@ export default {
   flex-wrap: nowrap;
   align-items: stretch;
   justify-content: space-evenly;
+}
+
+.recentes .card{
+  height: 95%;
+}
+
+.recentes .card-title{
+  font-size: 20vh;
+}
+.recentes .card-text{
+  font-size: 8vh;
 }
 
 .corfundo{

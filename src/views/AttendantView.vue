@@ -94,7 +94,7 @@ export default {
         },
       },
       mounted() {
-        this.socket.on("call", this.calling);
+        this.socket.on("updatecall", this.calling);
         this.initAtendente();
       },
     created() {

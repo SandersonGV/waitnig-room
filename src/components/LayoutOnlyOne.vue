@@ -27,7 +27,6 @@ export default {
     RecentCalls: Array,
     LastCalls: Array,
     envname: String,
-    envUrl: String,
     theme:Object
   },
   data() {
@@ -84,13 +83,6 @@ export default {
 
 .rodapeText{
   font-size: x-large;
-}
-
-.ultimas-chamadas {  
-  grid-area: ultimas-chamadas;
-  display: flex;
-    flex-direction: column;
-    align-items: stretch;
 }
 
 .recentes { grid-area: recentes; }

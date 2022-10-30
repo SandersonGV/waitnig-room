@@ -3,7 +3,8 @@
         <div class="row min-vh-100 min-vw-100">
             <div class="row p-3 " style="height: 65vh;">
                 <div class="col-8">
-                    <img style="width: 100%; height: 100%;" :src="envUrl" />
+                    <video v-if="media.type=='video'" style="width: 100%; height: 100%;" autoplay muted :src="media.url" ></video>
+                    <img v-else style="width: 100%; height: 100%;" :src="media.url" />
                 </div>
                 <div class="col-4">
                     <h2>Chamando agora</h2>
@@ -54,7 +55,7 @@ export default {
     RecentCalls: Array,
     LastCalls: Array,
     envname: String,
-    envUrl: String,
+    media: Object,
   },
   data() {
     return {

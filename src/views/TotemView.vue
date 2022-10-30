@@ -49,7 +49,8 @@ export default {
             this.socket.emit("queue", {
               placeid: id,
               text: text,
-              env: this.myenv
+              env: this.myenv,
+              print: 1
             });
           }
         },

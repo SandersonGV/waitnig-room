@@ -1,9 +1,10 @@
 <template>
     <div>
-        <LayoutWithMediaVue v-if="layout==1" :RecentCalls="RecentCalls" :LastCalls="LastCalls" :envname="envname" :envUrl="envUrl" :theme="theme" />
-        <LayoutWithOutMedia v-else-if="layout==2" :RecentCalls="RecentCalls" :LastCalls="LastCalls" :envname="envname" :envUrl="envUrl" :theme="theme" />
-        <LayoutOnlyOne v-else-if="layout==3" :RecentCalls="RecentCalls" :LastCalls="LastCalls" :envname="envname" :envUrl="envUrl" :theme="theme" />
-        <LayoutPadraoVue v-else :RecentCalls="RecentCalls" :LastCalls="LastCalls" :envname="envname" :envUrl="envUrl"/>
+        <LayoutWithMediaVue v-if="layout==1" :RecentCalls="RecentCalls" :LastCalls="LastCalls" :envname="envname" :media="media" :theme="theme" />
+        <LayoutWithOutMedia v-else-if="layout==2" :RecentCalls="RecentCalls" :LastCalls="LastCalls" :envname="envname"  :theme="theme" />
+        <LayoutOnlyOne v-else-if="layout==3" :RecentCalls="RecentCalls" :envname="envname"  :theme="theme" />
+        <LayoutOnlyOneWithMedia v-else-if="layout==4" :RecentCalls="RecentCalls"  :media="media" :envname="envname"  :theme="theme" />
+        <LayoutPadraoVue v-else :RecentCalls="RecentCalls" :LastCalls="LastCalls" :envname="envname" :media="media"/>
     </div>
 </template>
 <script>
@@ -12,6 +13,7 @@ import LayoutPadraoVue from "@/components/LayoutPadrao.vue"
 import LayoutWithMediaVue from "@/components/LayoutWithMedia.vue"
 import LayoutWithOutMedia from "@/components/LayoutWithOutMedia.vue"
 import LayoutOnlyOne from "@/components/LayoutOnlyOne.vue"
+import LayoutOnlyOneWithMedia from "@/components/LayoutOnlyOneWithMedia.vue"
 
 
 export default {
@@ -21,6 +23,7 @@ export default {
         LayoutWithMediaVue: LayoutWithMediaVue,
         LayoutWithOutMedia: LayoutWithOutMedia,
         LayoutOnlyOne: LayoutOnlyOne,
+        LayoutOnlyOneWithMedia: LayoutOnlyOneWithMedia,
     },
     data() {
         return {
@@ -28,9 +31,8 @@ export default {
             AllCalls: [],
             RecentCalls: [],
             LastCalls: [],
-            envUrl: "",
             envname: "",
-            myenv: "",
+            media: {},
             horaAtual: "",
             dataAtual: "",
             layout: "1",
@@ -44,7 +46,7 @@ export default {
                 let calls = env.calls.filter(o => o.status == '2');
                 this.RecentCalls = this.LastCalls = [];
                 this.AllCalls = calls;
-                this.RecentCalls = this.AllCalls.length > 2? this.AllCalls.slice(0, env.layout.recentCalls):this.AllCalls;
+                this.RecentCalls = this.AllCalls.length >= 2? this.AllCalls.slice(0, env.layout.recentCalls):this.AllCalls;
                 this.theme = env.theme;
                 if (this.RecentCalls.length > 0){
                     let calltext = this.RecentCalls[0].name + " em " + this.RecentCalls[0].place.name
@@ -56,7 +58,7 @@ export default {
                     this.LastCalls = this.AllCalls.slice(env.layout.recentCalls, (env.layout.recentCalls+env.layout.lastCalls));
                 }
             }
-            console.log(this.RecentCalls)
+            console.log(env.layout.recentCalls,this.RecentCalls)
         },
         voiceCall: function (text) {
             let speaker = window.speechSynthesis;
@@ -75,7 +77,7 @@ export default {
             this.socket.emit("initWaitRoom", this.myenv);
         },
         configWaitRoom: function (data) {
-            this.envUrl = data.url;
+            this.media = data.media;
             this.envname = data.name;
             this.calling(data)
         }

@@ -40,7 +40,6 @@ export default {
     RecentCalls: Array,
     LastCalls: Array,
     envname: String,
-    envUrl: String,
     theme:Object
   },
   data() {
