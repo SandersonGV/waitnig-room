@@ -100,7 +100,7 @@
                                                         <td>
                                                             <span><i class='fas fa-table mx-1'></i> Toten </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="text-end">
                                                             <router-link class="btn btn-sm btn-outline-info float-right" target="_blank"
                                                                 :to="'/totem/'+env.id" >
                                                                 <i class='fas fa-external-link-alt'></i> Abrir
@@ -115,7 +115,7 @@
                                                         <td>
                                                             <span><i class='far fa-user mx-1'></i> Atendente </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="text-end">
                                                             <router-link class="btn btn-sm btn-outline-info float-right" target="_blank"
                                                                 :to="'/Attendant/'+env.id" >
                                                                 <i class='fas fa-external-link-alt'></i> Abrir
@@ -130,7 +130,7 @@
                                                         <td>
                                                             <span><i class='fas fa-tv mx-1'></i> Sala de espera </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="text-end">
                                                             <router-link class="btn btn-sm btn-outline-info float-right" target="_blank"
                                                                 :to="'/WaitingRoom/'+env.id" >
                                                                 <i class='fas fa-external-link-alt'></i> Abrir
@@ -151,14 +151,15 @@
                                             <div class="col-6">
                                                 <div>Espera</div>
                                                 <ul v-for="(call,index) in env.calls.filter(o=>o.status == '1')"
-                                                    :key="index" class="list-group">
-                                                    <li class="list-group-item m-1">
+                                                    :key="index" class="list-group ">
+                                                    <li class="list-group-item">
                                                         <div class="d-flex justify-content-between ">
                                                             <div>{{call.name}} </div>
-                                                            <div><button class="btn btn-sm btn-warning float-right"
+                                                            <div>
+                                                                <button class="btn btn-sm btn-warning float-right mx-1"
                                                                     @click="callTicket(call.id, env.id)"><i
                                                                         class='far fa-bell'></i></button>
-                                                                <button class="btn btn-sm btn-danger float-right"
+                                                                <button class="btn btn-sm btn-danger float-right mx-1"
                                                                     @click="dropCall(call.id, env.id)">
                                                                     <i class="	far fa-trash-alt"></i>
                                                                 </button>
@@ -174,10 +175,10 @@
                                                     <li class="list-group-item m-1">
                                                         <div class="d-flex justify-content-between ">
                                                             <div>{{call.name}} </div>
-                                                            <div><button class="btn btn-sm btn-warning float-right"
+                                                            <div><button class="btn btn-sm btn-warning float-right mx-1"
                                                                     @click="callTicket(call.id, env.id)"><i
                                                                         class='far fa-bell'></i></button>
-                                                                <button class="btn btn-sm btn-danger float-right"
+                                                                <button class="btn btn-sm btn-danger float-right mx-1"
                                                                     @click="dropCall(call.id, env.id)">
                                                                     <i class="	far fa-trash-alt"></i>
                                                                 </button>

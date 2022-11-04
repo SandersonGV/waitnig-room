@@ -19,18 +19,18 @@
                             </div>
                             <table class="table">
                                 <thead>
-                                    <th>Nome</th>
-                                    <th>Açõe</th>
+                                    <th >Nome</th>
+                                    <th class="text-end">Açõe</th>
                                 </thead>
                                 <tbody>
                                     <tr  v-for="(env,index) in environments" :key="index">
                                         <td>{{env.name}}</td>
-                                        <td>
+                                        <td class="text-end">
                                             <router-link  class="btn btn-sm btn-outline-primary mx-2"
                                             :to="'/environment/'+env.id" >
                                                 <i class="fas fa-external-link-alt"></i> Abrir
                                             </router-link>
-                                            <button type="button" class="btn btn-sm btn-outline-danger mx-2" >
+                                            <button type="button" class="btn btn-sm btn-outline-danger" >
                                                 <i class='fas fa-trash'> </i> Remover
                                             </button>  
                                         </td>
@@ -218,7 +218,6 @@ export default {
             alert("nome não pode ser vazio")
             return;
           }
-          console.log(this.ambiente)
 
           this.socket.emit("createEnv", this.ambiente);
           this.novoAmbiente();

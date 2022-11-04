@@ -7,11 +7,9 @@
         <div class="card noprint rounded border-0 shadow-sm position-relative">
             <div class="card-body">
               <div class="row text-center">
-                <div class="col" :key="index" v-for="place,index in places" >
-                  <button type="button" class="btn btn-sq-lg btn-outline-primary m-2"
-                      @click="callTicket(place)">
-                      <i class="fas fa-receipt fa-5x"></i>
-                      <p class="my-2">{{place.name}}</p>
+                <div class="d-grid gap-2">
+                  <button class="btn btn-outline-primary " type="button" :key="index" v-for="place,index in places" @click="callTicket(place)">
+                    <div class="text-start m-3 " > <i class="fas fa-receipt fa-3x"></i> <span class=" display-4">{{place.name}}</span></div>
                   </button>
                 </div>
               </div>

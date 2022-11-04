@@ -19,7 +19,10 @@
                   <h3 class="text-center">Fila de espera</h3>
                 </div>
                 <div class="card-body">
-                <input class="form-control" placeholder="Nome do cliente" v-model="nomeCliente">
+                  <button type="button" class="btn btn-sm btn-primary " data-bs-toggle="modal"
+                      data-bs-target="#myModal" @click="newTicket" >
+                      <i class='fa fa-plus'></i> Novo Ticket
+                  </button>
                   <ul :key="index" v-for="call,index in AllQueue" class="list-group">
                     <li class="list-group-item m-2">
                       <div class="d-flex justify-content-between ">
@@ -54,6 +57,45 @@
         </div>
       </div>
     </div>
+
+    <div class="modal" id="myModal">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title"> Novo Ticket </h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="row">
+                          <div class="col-4 form-floating">
+                                <select class="form-select" v-model="ticket.place">
+                                    <option selected >selecione</option>
+                                    <option :key="index" v-for="item,index in places" :value="item" >{{item.name}}</option>
+                                </select>
+                                <label >Locais</label>
+                            </div>
+                            <div class="col-8 form-floating">
+                                <input v-model="ticket.text" class="form-control form-control-sm ">
+                                <label >Texto</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                        <button class="btn  btn-primary " data-bs-dismiss="modal" @click="queueTicket"><i
+                                class='fa fa-plus'></i>
+                            Criar</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
   </div>
 </template>
 <script>
@@ -66,7 +108,8 @@ export default {
         AllQueue: [],
         nomeAmbiente: "",
         myenv: "",
-        nomeCliente: "",
+        ticket: {},
+        places:[],
       }},
       methods: {
         calling: function (env) {
@@ -76,6 +119,7 @@ export default {
             let queue = env.calls.filter(o => o.status == '1');
             this.AllCalls = calls;
             this.AllQueue = queue;
+            this.places = env.places;
           }
         },
         callTicket: function (id) {
@@ -85,6 +129,29 @@ export default {
             env: this.myenv
           });
           this.nomeCliente = "";
+        },
+        newTicket: function(){
+          this.ticket = {place:{id:""},text:""};
+        },
+        queueTicket: function () {
+          if(this.ticket.place.id=="" || this.ticket.text==""){
+            alert('preencha todos os campos')
+            return;
+          }
+            
+          let id = this.ticket.place.id;
+          let text = this.ticket.text;
+          if (!this.myenv) {
+            alert('ambiente indisponivel')
+          }
+          if (id) {
+            this.socket.emit("queue", {
+              placeid: id,
+              text: text,
+              env: this.myenv,
+              print: 1
+            });
+          }
         },
         verifyEnv: function (env) {
           return this.myenv == env.id;
