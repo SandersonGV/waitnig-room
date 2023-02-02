@@ -353,7 +353,6 @@ export default {
         },
         getEnv: function (env) {
           this.env = env
-          console.log(this.env)
         },
         callTicket: function (id, env) {
             this.socket.emit("call", {
@@ -383,7 +382,6 @@ export default {
     },
     mounted() {
         this.initEnv();
-        console.log(this.myenv)
         this.socket
             .on("createEnv", this.getEnvs)
             .on("updatecall", this.calling)
@@ -391,7 +389,6 @@ export default {
     },
     created() {
         this.myenv = this.$route.params.env
-        console.log(this.myenv)
     },
 }
 </script>

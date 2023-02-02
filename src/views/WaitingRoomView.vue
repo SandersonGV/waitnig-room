@@ -57,7 +57,6 @@ export default {
                     this.LastCalls = this.AllCalls.slice(env.layout.recentCalls, (env.layout.recentCalls+env.layout.lastCalls));
                 }
             }
-            console.log(env.layout.recentCalls,this.RecentCalls)
         },
         voiceCall: function (text) {
             let speaker = window.speechSynthesis;

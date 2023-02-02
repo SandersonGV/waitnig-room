@@ -72,7 +72,6 @@ export default {
         },
   }, 
   mounted() {
-    console.log(this.theme)
         this.getDateTime();
         setInterval(() => {
             this.getDateTime();
