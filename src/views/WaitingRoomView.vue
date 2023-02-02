@@ -41,7 +41,6 @@ export default {
     },
     methods: {
         calling: function (env) {
-            console.log(env)
             if (this.verifyEnv(env)) {
                 let calls = env.calls.filter(o => o.status == '2');
                 this.RecentCalls = this.LastCalls = [];

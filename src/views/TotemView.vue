@@ -53,12 +53,14 @@ export default {
           }
         },
         initTotem: function (data) {
+          console.log(data)
           if (!this.myenv) {
             alert('ambiente indisponivel')
           }
           if (data) {
             this.envName = data.envName;
             this.places = data.places;
+            console.log(data)
           }
         },
         getTotenConfig: function () {
@@ -78,6 +80,7 @@ export default {
       },
     created() {
         this.myenv = this.$route.params.env
+        console.log(this.myenv)
     },
 }
 </script>

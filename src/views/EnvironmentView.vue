@@ -17,8 +17,7 @@
                                         data-bs-target="#myModal" @click="editAmbiente(env)">
                                         <i class='fas fa-edit'></i> Editar
                                     </button>
-                                    <router-link type="button" class="btn btn-sm btn-outline-danger mx-1" 
-                                        to="/">
+                                    <router-link type="button" class="btn btn-sm btn-outline-danger mx-1" to="/">
                                         <i class='fas fa-arrow-left'></i> voltar
                                     </router-link>
                                 </div>
@@ -52,7 +51,7 @@
                                             <span> Tipo da midia: </span>
                                         </div>
                                         <div class="col">
-                                            <span> {{env.media.type}} </span>
+                                            <span> {{env.media?.type||""}} </span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -63,7 +62,6 @@
                                             <span>  {{env.media.url}} </span>
                                         </div>
                                     </div>
-                               
                                     <div class="row">
                                         <div class="col">
                                             <table class="table table-sm  caption-top">
@@ -75,7 +73,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody >
-                                                    <tr :key="index" v-for="(local,index) in ambiente.places"> 
+                                                    <tr :key="index" v-for="(local,index) in env.places"> 
                                                         <td>{{local.name}}</td>
                                                         <td>{{local.type}}</td>
                                                     </tr>
@@ -148,47 +146,46 @@
                                 </div>
                                 <div class="tab-pane fade" id="pills-tickets" role="tabpanel" aria-labelledby="pills-tickets-tab" tabindex="0">
                                     <div class="card-body row">
-                                            <div class="col-6">
-                                                <div>Espera</div>
-                                                <ul v-for="(call,index) in env.calls.filter(o=>o.status == '1')"
-                                                    :key="index" class="list-group ">
-                                                    <li class="list-group-item">
-                                                        <div class="d-flex justify-content-between ">
-                                                            <div>{{call.name}} </div>
-                                                            <div>
-                                                                <button class="btn btn-sm btn-warning float-right mx-1"
-                                                                    @click="callTicket(call.id, env.id)"><i
-                                                                        class='far fa-bell'></i></button>
-                                                                <button class="btn btn-sm btn-danger float-right mx-1"
-                                                                    @click="dropCall(call.id, env.id)">
-                                                                    <i class="	far fa-trash-alt"></i>
-                                                                </button>
-                                                            </div>
+                                        <div class="col-6">
+                                            <div>Espera</div>
+                                            <ul v-for="(call,index) in env.calls.filter(o=>o.status == '1')"
+                                                :key="index" class="list-group ">
+                                                <li class="list-group-item">
+                                                    <div class="d-flex justify-content-between ">
+                                                        <div>{{call.name}} </div>
+                                                        <div>
+                                                            <button class="btn btn-sm btn-warning float-right mx-1"
+                                                                @click="callTicket(call.id, env.id)"><i
+                                                                    class='far fa-bell'></i></button>
+                                                            <button class="btn btn-sm btn-danger float-right mx-1"
+                                                                @click="dropCall(call.id, env.id)">
+                                                                <i class="	far fa-trash-alt"></i>
+                                                            </button>
                                                         </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-6">
-                                                <div>Chamando</div>
-                                                <ul v-for="(call,index ) in env.calls.filter(o=>o.status == '2')"
-                                                    :key="index" class="list-group">
-                                                    <li class="list-group-item m-1">
-                                                        <div class="d-flex justify-content-between ">
-                                                            <div>{{call.name}} </div>
-                                                            <div><button class="btn btn-sm btn-warning float-right mx-1"
-                                                                    @click="callTicket(call.id, env.id)"><i
-                                                                        class='far fa-bell'></i></button>
-                                                                <button class="btn btn-sm btn-danger float-right mx-1"
-                                                                    @click="dropCall(call.id, env.id)">
-                                                                    <i class="	far fa-trash-alt"></i>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-
+                                                    </div>
+                                                </li>
+                                            </ul>
                                         </div>
+                                        <div class="col-6">
+                                            <div>Chamando</div>
+                                            <ul v-for="(call,index ) in env.calls.filter(o=>o.status == '2')"
+                                                :key="index" class="list-group">
+                                                <li class="list-group-item m-1">
+                                                    <div class="d-flex justify-content-between ">
+                                                        <div>{{call.name}} </div>
+                                                        <div><button class="btn btn-sm btn-warning float-right mx-1"
+                                                                @click="callTicket(call.id, env.id)"><i
+                                                                    class='far fa-bell'></i></button>
+                                                            <button class="btn btn-sm btn-danger float-right mx-1"
+                                                                @click="dropCall(call.id, env.id)">
+                                                                <i class="	far fa-trash-alt"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -356,6 +353,7 @@ export default {
         },
         getEnv: function (env) {
           this.env = env
+          console.log(this.env)
         },
         callTicket: function (id, env) {
             this.socket.emit("call", {
@@ -375,7 +373,6 @@ export default {
             return;
           }
           this.socket.emit("createEnv", this.ambiente);
-          this.novoAmbiente();
         },
         editAmbiente: function (env) {
           this.ambiente = env
@@ -386,6 +383,7 @@ export default {
     },
     mounted() {
         this.initEnv();
+        console.log(this.myenv)
         this.socket
             .on("createEnv", this.getEnvs)
             .on("updatecall", this.calling)
@@ -393,6 +391,7 @@ export default {
     },
     created() {
         this.myenv = this.$route.params.env
+        console.log(this.myenv)
     },
 }
 </script>
